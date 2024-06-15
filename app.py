@@ -86,23 +86,70 @@ def get_large_audio_transcription_on_silence(path):
     return whole_text
 
 def summarize_text_with_gemini(text):
-    response = chat_session.send_message(f"give me the summary of {text} 'my prompt is Hello everybody today i'm saving an email that i got from a young physics student while working on an array of really really so the question is what is the difference between speed and velocity there is an interesting and excellent question because i do at some point that there is a same thing now as per usual i am going to tell you what the difference is in words and then i will explain with an easy example so basically the difference between them is that the velocity has a direction while speed does not in physics we call speed is scalar quantity is a vector expression 30 km per hour distance over time so this is by definition speed velocity expression with something like. 30 km per hour in the north direction or do not very simple example if you take your bicycle when you want to go to the park if you are writing your baisikal at 5 km per hour and 2 years reach the park then your speed is 5 km per hour is the distance that you have covered in the time it took you to cover it for velocity like i said it has to do with the direction so for example if you start from point a and you go with the speed. In a circle and then you come back to point a again the exact same point then we say your speed here is 5 km per hour but your velocity here is zero and the reason it is zero is because there is no directional again you started in the same point and then you came back at the same point again even if you want to work for mirrors this way 2 m this way. 4 m this way and then 2 metres of here then your velocity or average velocity is zero km per hour the difference between the two is like the difference between distance and displacement basically if you not sure about that when i will make a very quick video like this about it thank you so much guys just quickly while i'm working on different videos there are longer i'll see on the next one.' the")
+    response = chat_session.send_message(f"give me the summary of {text} 'my prompt is Hello everybody today i'm saving an email that i got from a young physics student while working on an array of really really so the question is what is the difference between speed and velocity there is an interesting and excellent question because i do at some point that there is a same thing now as per usual i am going to tell you what the difference is in words and then i will explain with an easy example so basically the difference between them is that the velocity has a direction while speed does not in physics we call speed is scalar quantity is a vector expression 30 km per hour distance over time so this is by definition speed velocity expression with something like. 30 km per hour in the north direction or do not very simple example if you take your bicycle when you want to go to the park if you are writing your baisikal at 5 km per hour and 2 years reach the park then your speed is 5 km per hour is the distance that you have covered in the time it took you to cover it for velocity like i said it has to do with the direction so for example if you start from point a and you go with the speed. In a circle and then you come back to point a again the exact same point then we say your speed here is 5 km per hour but your velocity here is zero and the reason it is zero is because there is no directional again you started in the same point and then you came back at the same point again even if you want to work for mirrors this way 2 m this way. 4 m this way and then 2 metres of here then your velocity or average velocity is zero km per hour the difference between the two is like the difference between distance and displacement basically if you not sure about that when i will make a very quick video like this about it thank you so much guys just quickly while i'm working on different videos there are longer i'll see on the next one.' the ideal output is 'This text delves into the fundamental difference between speed and velocity in physics. The author, likely a physics educator, explains that while both terms relate to movement, velocity encompasses both speed and direction, making it a vector quantity. Speed, on the other hand, is a scalar quantity, meaning it only considers the magnitude of motion. The author emphasizes this distinction using a simple example of cycling to a park. Riding at 5 km/h represents speed, but if one circles back to the starting point, their overall velocity becomes zero because there is no net change in direction. The concept of displacement is then introduced as analogous to velocity, while distance is compared to speed. The text concludes with an assurance of future video explanations for those seeking further clarification on these concepts.' ")
     print(response)
     candidates = response.candidates
     
     # Extracting the "text" part from the response
     text_parts = []
+    cleaned_text_parts = []
+
     
     for candidate in candidates:
         content = candidate.content
         
         for part in content.parts:
             text = part.text
-            text_parts.append(text)
-            
-    print(text_parts)
+            # Removing newline characters and leading/trailing quotes
+            cleaned_text = text.replace('\n', ' ').replace('[', '').replace(']', '').replace('**', '').strip('"')
+            cleaned_text_parts.append(cleaned_text)
+            print(text_parts)
     
-    return text_parts
+    return cleaned_text_parts
+            
+def kannada_translation(text):
+    response = chat_session.send_message(f"give me the translation of {text} into kannada")
+    print(response)
+    candidates = response.candidates
+    
+    text_parts = []
+    cleaned_text_parts_kannada = []
+
+    
+    for candidate in candidates:
+        content = candidate.content
+        
+        for part in content.parts:
+            text = part.text
+            cleaned_text = text.replace('\n', ' ').replace('[', '').replace(']', '').replace('**', '').strip('"')
+            cleaned_text_parts_kannada.append(cleaned_text)
+            print(cleaned_text_parts_kannada)
+        return cleaned_text_parts_kannada
+
+
+
+def hindi_translation(text):
+    response = chat_session.send_message(f"give me the translation of {text} into hindi")
+    print(response)
+    candidates = response.candidates
+    
+    text_parts = []
+    cleaned_text_parts_hindi = []
+
+    
+    for candidate in candidates:
+        content = candidate.content
+        
+        for part in content.parts:
+            text = part.text
+            cleaned_text = text.replace('\n', ' ').replace('[', '').replace(']', '').replace('**', '').strip('"')
+            cleaned_text_parts_hindi.append(cleaned_text)
+            print(cleaned_text_parts_hindi)
+        return cleaned_text_parts_hindi
+            
+        
+    
+    
 
     
    
@@ -129,8 +176,16 @@ def upload_file():
             extract_audio(video_path, audio_path)
             transcription = get_large_audio_transcription_on_silence(audio_path)
             summary = summarize_text_with_gemini(transcription)
-            return render_template('transcription.html', transcription=transcription, summary=summary)
+            hindi=hindi_translation(transcription)
+            kannada=kannada_translation(transcription)
+            
+            return render_template('transcription.html', transcription=transcription, summary=summary,hindi=hindi,kannada=kannada)
     return render_template('upload.html')
+
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0')

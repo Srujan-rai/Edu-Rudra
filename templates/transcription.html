@@ -3,13 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transcription Result</title>
+    <title>Transcription</title>
 </head>
 <body>
-    <h1>Transcription Result</h1>
-    <h2>Transcription</h2>
+    <h1>Transcription</h1>
     <p>{{ transcription }}</p>
-    <h2>Summary</h2>
+    
+    {% if translation %}
+    <h2>Translation ({{ selected_language }})</h2>
+    <p>{{ translation }}</p>
+    {% endif %}
+
+    <form action="{{ url_for('translate') }}" method="post">
+        <input type="hidden" name="transcription" value="{{ transcription }}">
+        <label for="language">Translate to:</label>
+        <select name="language" id="language">
+            <option value="hi">Hindi</option>
+            <option value="kn">Kannada</option>
+        </select>
+        <button type="submit">Translate</button>
+    </form>
+
+    <form action="{{ url_for('summarize') }}" method="post">
+        <input type="hidden" name="transcription" value="{{ transcription }}">
+        <label for="summary_language">Summarize to:</label>
+        <select name="summary_language" id="summary_language">
+            <option value="en">English</option>
+            <option value="hi">Hindi</option>
+            <option value="kn">Kannada</option>
+        </select>
+        <button type="submit">Summarize</button>
+    </form>
+    
+    {% if summary %}
+    <h2>Summary ({{ summary_language }})</h2>
     <p>{{ summary }}</p>
+    {% endif %}
 </body>
 </html>

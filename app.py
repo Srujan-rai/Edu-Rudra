@@ -4,10 +4,9 @@ import os
 app=Flask(__name__)
 
 
-@app.route('/'):
-    
+@app.route('/')
 def home():
-    render_template('index.html')
+    return render_template('home.html')
 
 
 if __name__=="__main__":

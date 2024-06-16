@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transcription</title>
+    <style>
+        .timestamps {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <h1>Transcription</h1>
@@ -28,12 +33,30 @@
         <input type="hidden" name="transcription" value="{{ transcription }}">
         <label for="summary_language">Summarize to:</label>
         <select name="summary_language" id="summary_language">
-            <option value="en">English</option>
-            <option value="hi">Hindi</option>
-            <option value="kn">Kannada</option>
+            <option value="english">English</option>
+            <option value="hindi">Hindi</option>
+            <option value="kannada">Kannada</option>
         </select>
         <button type="submit">Summarize</button>
     </form>
+
+    <form action="{{ url_for('search') }}" method="post">
+        <label for="search_word">Search for a word:</label>
+        <input type="text" id="search_word" name="search_word" required>
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Display timestamps -->
+    {% if timestamps %}
+    <div class="timestamps">
+        <h2>Timestamps for "{{ search_word }}"</h2>
+        <ul>
+            {% for start_time, end_time in timestamps %}
+            <li>{{ start_time }}s - {{ end_time }}s</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
     
     {% if summary %}
     <h2>Summary ({{ summary_language }})</h2>

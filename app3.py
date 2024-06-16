@@ -9,7 +9,7 @@ from concurrent.futures import ThreadPoolExecutor
 import google.generativeai as genai
 import googletrans
 import secrets
-from weasyprint import HTML
+
 
 
 API_KEY = 'AIzaSyC8kopd_HFCYwAjsBx6ta88OnAuOno2KYo'

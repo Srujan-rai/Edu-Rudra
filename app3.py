@@ -9,6 +9,8 @@ from concurrent.futures import ThreadPoolExecutor
 import google.generativeai as genai
 import googletrans
 import secrets
+from weasyprint import HTML
+
 
 API_KEY = 'AIzaSyC8kopd_HFCYwAjsBx6ta88OnAuOno2KYo'
 
@@ -125,6 +127,7 @@ def index():
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
+        
         if 'file' not in request.files:
             return redirect(request.url)
         file = request.files['file']
@@ -139,7 +142,9 @@ def upload_file():
             transcript = get_large_audio_transcription_on_silence(audio_path)
             session['transcript'] = transcript
             session['video_path'] = video_path
+
             return render_template('transcription.html', transcription=transcript)
+
     return render_template('upload.html')
 
 @app.route('/translate', methods=['POST'])

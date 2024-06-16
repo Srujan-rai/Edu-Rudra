@@ -3,13 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Video</title>
+    <title>Functions Page</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+        }
+        .logo {
+            font-size: 48px;
+            font-weight: bold;
+            color: #32a852;
+            margin-bottom: 8px;
+        }
+        .description {
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #161b22;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            margin-bottom: 10px;
+        }
+        .button:hover {
+            background-color: #32a852;
+        }
+        .navbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #161b22;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar .logo {
+            font-size: 24px;
+            color: #ffffff;
+        }
+        .navbar a {
+            color: #0b0c0c; /* Changed color to match the button theme */
+            text-decoration: none;
+            margin-right: auto; /* Move the button more to the left */
+            margin-left: 20px;
+            font-size: 16px;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .input-box {
+            margin-bottom: 30px;
+            width: 100%;
+            position: relative; /* Add relative positioning for the delete button */
+        }
+        .input-box input[type="file"],
+        .input-box input[type="url"] {
+            padding: 10px;
+            width: 100%;
+            font-size: 16px;
+            border: 1px solid #c9d1d9;
+            border-radius: 5px;
+            background-color: #161b22;
+            color: #c9d1d9;
+        }
+        .delete-button {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            background: #ff4d4d;
+            border: none;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .loading {
+            display: none; /* Hidden by default */
+            font-size: 18px;
+            color: #32a852;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Upload Your Video</h1>
-    <form action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept="video/mp4">
-        <button type="submit">Transcribe Video</button>
-    </form>
+    <div class="navbar">
+        <a href="/" class="button">
+            <div class="logo">Edu-Rudra</div>
+        </a>
+    </div>
+    <div class="container">
+        <div class="logo">Edu-Rudra</div>
+        <div class="description">
+            <form id="upload-form" action="{{ url_for('upload_file') }}" method="post" enctype="multipart/form-data">
+                <div class="input-box">
+                    <input type="file" id="file-input" name="file" accept=".mp3, .mp4, .wav">
+                    <button type="button" class="delete-button" onclick="clearFileInput()">X</button>
+                </div>
+                <div class="input-box"> 
+                    <input type="url" id="url-input" name="url" placeholder="Enter a link">
+                </div>
+                <button type="submit" class="button">Upload file</button>
+                <button type="button" class="button" onclick="submitLink()">Submit link</button>
+            </form>
+        </div>
+        <div class="loading" id="loadingMessage">Uploading, please wait...</div>
+    </div>
+    <script>
+        function clearFileInput() {
+            const fileInput = document.getElementById('file-input');
+            fileInput.value = '';
+        }
+
+        document.getElementById('upload-form').onsubmit = function() {
+            document.getElementById('loadingMessage').style.display = 'block';
+        };
+    </script>
 </body>
 </html>

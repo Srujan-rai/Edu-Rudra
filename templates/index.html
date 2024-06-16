@@ -4,11 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Transcription</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: url('https://www.transparenttextures.com/patterns/asfalt-dark.png'); /* Subtle background pattern */
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            max-width: 600px;
+            padding: 20px;
+            background: rgba(13, 17, 23, 0.85); /* Slightly transparent background for readability */
+            border-radius: 10px;
+        }
+        .logo {
+            font-size: 48px;
+            font-weight: bold;
+            color: #32a852;
+            margin-bottom: 20px;
+        }
+        .button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #0d1117;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        .button:hover {
+            background-color: #32a852;
+        }
+        .navbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #161b22;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar .logo {
+            font-size: 24px;
+            color: #ffffff;
+        }
+        .navbar a {
+            color: #c9d1d9;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 16px;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        .navbar .github-logo {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+        .navbar .github-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to the Video Transcription Service</h1>
-    <a href="{{ url_for('upload_file') }}">
-        <button>Upload Video</button>
-    </a>
+    <div class="navbar">
+        <div class="logo">Edu-Rudra</div>
+        <a href="https://github.com/your-repo" class="github-link" target="_blank">
+            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" class="github-logo">
+        </a>
+    </div>
+    <div class="container">
+        <h1>Welcome to the Video Transcription Service</h1>
+        <a href="{{ url_for('upload_file') }}" class="button">Upload Video</a>
+    </div>
 </body>
 </html>

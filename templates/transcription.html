@@ -8,30 +8,36 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f4f4f9;
+            background-color: #0d1117;
             margin: 0;
+            color: #c9d1d9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
             padding: 20px;
+            background: #161b22;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin: 20px;
         }
 
         h1, h2 {
-            color: #333;
+            color: #32a852;
             text-align: center;
         }
 
         p {
             font-size: 18px;
             line-height: 1.6;
-            color: #555;
+            color: #c9d1d9;
             text-align: justify;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         form {
@@ -46,14 +52,15 @@
 
         select, input[type="text"] {
             padding: 8px;
-            border: 1px solid #ccc;
+            border: 1px solid #c9d1d9;
             border-radius: 4px;
-            width: 200px;
+            background-color: #161b22;
+            color: #c9d1d9;
         }
 
         button {
             padding: 10px 20px;
-            background-color: #007BFF;
+            background-color: #0d1117;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -62,7 +69,7 @@
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #32a852; /* Updated to green on hover */
         }
 
         .timestamps {
@@ -82,6 +89,7 @@
             margin: 5px 0;
             border-radius: 4px;
             transition: transform 0.3s ease;
+            cursor: pointer;
         }
 
         .timestamps li:hover {
@@ -100,9 +108,42 @@
                 opacity: 1;
             }
         }
+
+        .navbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #161b22;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar .logo {
+            font-size: 24px;
+            color: #ffffff;
+        }
+
+        .navbar a {
+            color: #c9d1d9;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 16px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
 </head>
 <body>
+    <div class="navbar">
+        <div class="logo"><a href="{{ url_for('index') }}">Edu-Rudra</a></div>
+    </div>
     <div class="container fade-in">
         <h1>Transcription</h1>
         <p>{{ transcription }}</p>
@@ -132,6 +173,13 @@
             </select>
             <button type="submit">Summarize</button>
         </form>
+        
+        {% if summary %}
+        <h2>Summary ({{ summary_language }})</h2>
+        <p id="summary">{{ summary }}</p>
+        <button id="download-pdf" onclick="downloadSummaryAsPDF()">Download as PDF</button>
+        <div id="summaryContainer"></div>
+        {% endif %}
 
         <form action="{{ url_for('search') }}" method="post">
             <label for="search_word">Search for a word:</label>
@@ -149,11 +197,26 @@
             </ul>
         </div>
         {% endif %}
-        
-        {% if summary %}
-        <h2>Summary ({{ summary_language }})</h2>
-        <p>{{ summary }}</p>
-        {% endif %}
     </div>
+
+    
+        <script>
+            function downloadSummaryAsPDF() {
+                const summaryText = document.getElementById('summary').innerText;
+                const doc = new jsPDF();
+                doc.text(summaryText, 10, 10);
+            
+                // Generate Base64 string of the PDF
+                const pdfData = doc.output('datauristring');
+            
+                // Create a temporary link element
+                const link = document.createElement('a');
+                link.href = pdfData;
+                link.download = 'summary.pdf';
+                link.click();
+            }
+        </script>
+        
+    
 </body>
 </html>

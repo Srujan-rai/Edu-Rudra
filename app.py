@@ -146,6 +146,11 @@ def upload_file():
 
     return render_template('upload.html')
 
+@app.route('/live_text_to_speech')
+def live_text_to_speech():
+    print("srujan")
+    return render_template('speech_2_text.html')
+
 @app.route('/translate', methods=['POST'])
 def translate():
     text = request.form['transcription']
@@ -179,6 +184,11 @@ def search():
     timestamps = search_word_in_transcript(transcript, search_word, video_duration_seconds)
 
     return render_template('transcription.html', transcription=transcript, search_word=search_word, timestamps=timestamps)
+
+
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

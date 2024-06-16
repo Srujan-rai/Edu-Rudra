@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Speech-to-Text</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Speech-to-Text - Edu-Rudra</h1>
+      </div>
+      <div class="controls">
+        <select id="languageSelector">  
+          <option value="en-US">English (US)</option>
+          <option value="hi-IN">Hindi</option>
+          <option value="kn-IN">Kannada</option>
+        </select>
+
+        <button id="startRecording">Start Recording</button>
+        <button id="stopRecording" disabled>Stop Recording</button>
+      </div>
+      <div class="result">
+        <p>Converted Text</p>
+        <div id="recognizedText"></div>
+      </div>
+    </div>
+
+    <script>
+      let recognizer
+      let audioChunks = []
+
+      document
+        .getElementById("startRecording")
+        .addEventListener("click", startRecording)
+      document
+        .getElementById("stopRecording")
+        .addEventListener("click", stopRecording)
+
+      async function startRecording() {
+        try {
+          const selectedLanguage =
+            document.getElementById("languageSelector").value
+          recognizer = new window.webkitSpeechRecognition() // for Chrome, use webkitSpeechRecognition
+          recognizer.lang = selectedLanguage // Set the selected language
+
+          recognizer.onstart = () => {
+            console.log("Recording started...")
+          }
+
+          recognizer.onresult = (event) => {
+            const speechResult = event.results[0][0].transcript
+            document.getElementById("recognizedText").innerText = speechResult
+          }
+
+          recognizer.onend = () => {
+            console.log("Recording ended...")
+          }
+
+          recognizer.start()
+          document.getElementById("startRecording").disabled = true
+          document.getElementById("stopRecording").disabled = false
+        } catch (error) {
+          console.error("Error starting recording:", error)
+        }
+      }
+
+      function stopRecording() {
+        if (recognizer) {
+          recognizer.stop()
+          document.getElementById("startRecording").disabled = false
+          document.getElementById("stopRecording").disabled = true
+        }
+      }
+    </script>
+  </body>
+</html>
+```

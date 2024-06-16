@@ -66,9 +66,9 @@
             color: #ffffff;
         }
         .navbar a {
-            color: #0b0c0c; /* Changed color to match the button theme */
+            color: #0b0c0c;
             text-decoration: none;
-            margin-right: auto; /* Move the button more to the left */
+            margin-right: auto;
             margin-left: 20px;
             font-size: 16px;
         }
@@ -78,7 +78,7 @@
         .input-box {
             margin-bottom: 30px;
             width: 100%;
-            position: relative; /* Add relative positioning for the delete button */
+            position: relative;
         }
         .input-box input[type="file"],
         .input-box input[type="url"] {
@@ -108,7 +108,7 @@
             justify-content: center;
         }
         .loading {
-            display: none; /* Hidden by default */
+            display: none;
             font-size: 18px;
             color: #32a852;
             margin-top: 20px;
@@ -129,11 +129,12 @@
                     <input type="file" id="file-input" name="file" accept=".mp3, .mp4, .wav">
                     <button type="button" class="delete-button" onclick="clearFileInput()">X</button>
                 </div>
-                <div class="input-box"> 
+                <div class="input-box">
                     <input type="url" id="url-input" name="url" placeholder="Enter a link">
                 </div>
                 <button type="submit" class="button">Upload file</button>
                 <button type="button" class="button" onclick="submitLink()">Submit link</button>
+                <button type="button" class="button" onclick="redirectToLiveTextToSpeech()">Live Text-to-Speech</button>
             </form>
         </div>
         <div class="loading" id="loadingMessage">Uploading, please wait...</div>
@@ -147,6 +148,10 @@
         document.getElementById('upload-form').onsubmit = function() {
             document.getElementById('loadingMessage').style.display = 'block';
         };
+        function redirectToLiveTextToSpeech() {
+            window.location.href = "{{url_for('live_text_to_speech')}}";
+        }
+
     </script>
 </body>
 </html>

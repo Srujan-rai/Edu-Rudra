@@ -4,63 +4,156 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transcription</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1, h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #555;
+            text-align: justify;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        label, select, input[type="text"], button {
+            font-size: 16px;
+            margin: 5px;
+        }
+
+        select, input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
         .timestamps {
             margin-top: 20px;
+            text-align: center;
+        }
+
+        .timestamps ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .timestamps li {
+            background: #007BFF;
+            color: #fff;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            transition: transform 0.3s ease;
+        }
+
+        .timestamps li:hover {
+            transform: scale(1.05);
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Transcription</h1>
-    <p>{{ transcription }}</p>
-    
-    {% if translation %}
-    <h2>Translation ({{ selected_language }})</h2>
-    <p>{{ translation }}</p>
-    {% endif %}
+    <div class="container fade-in">
+        <h1>Transcription</h1>
+        <p>{{ transcription }}</p>
+        
+        {% if translation %}
+        <h2>Translation ({{ selected_language }})</h2>
+        <p>{{ translation }}</p>
+        {% endif %}
 
-    <form action="{{ url_for('translate') }}" method="post">
-        <input type="hidden" name="transcription" value="{{ transcription }}">
-        <label for="language">Translate to:</label>
-        <select name="language" id="language">
-            <option value="hi">Hindi</option>
-            <option value="kn">Kannada</option>
-        </select>
-        <button type="submit">Translate</button>
-    </form>
+        <form action="{{ url_for('translate') }}" method="post">
+            <input type="hidden" name="transcription" value="{{ transcription }}">
+            <label for="language">Translate to:</label>
+            <select name="language" id="language">
+                <option value="hi">Hindi</option>
+                <option value="kn">Kannada</option>
+            </select>
+            <button type="submit">Translate</button>
+        </form>
 
-    <form action="{{ url_for('summarize') }}" method="post">
-        <input type="hidden" name="transcription" value="{{ transcription }}">
-        <label for="summary_language">Summarize to:</label>
-        <select name="summary_language" id="summary_language">
-            <option value="english">English</option>
-            <option value="hindi">Hindi</option>
-            <option value="kannada">Kannada</option>
-        </select>
-        <button type="submit">Summarize</button>
-    </form>
+        <form action="{{ url_for('summarize') }}" method="post">
+            <input type="hidden" name="transcription" value="{{ transcription }}">
+            <label for="summary_language">Summarize to:</label>
+            <select name="summary_language" id="summary_language">
+                <option value="english">English</option>
+                <option value="hindi">Hindi</option>
+                <option value="kannada">Kannada</option>
+            </select>
+            <button type="submit">Summarize</button>
+        </form>
 
-    <form action="{{ url_for('search') }}" method="post">
-        <label for="search_word">Search for a word:</label>
-        <input type="text" id="search_word" name="search_word" required>
-        <button type="submit">Search</button>
-    </form>
+        <form action="{{ url_for('search') }}" method="post">
+            <label for="search_word">Search for a word:</label>
+            <input type="text" id="search_word" name="search_word" required>
+            <button type="submit">Search</button>
+        </form>
 
-    <!-- Display timestamps -->
-    {% if timestamps %}
-    <div class="timestamps">
-        <h2>Timestamps for "{{ search_word }}"</h2>
-        <ul>
-            {% for start_time, end_time in timestamps %}
-            <li>{{ start_time }}s - {{ end_time }}s</li>
-            {% endfor %}
-        </ul>
+        {% if timestamps %}
+        <div class="timestamps">
+            <h2>Timestamps for "{{ search_word }}"</h2>
+            <ul>
+                {% for start_time, end_time in timestamps %}
+                <li>{{ start_time }}s - {{ end_time }}s</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        
+        {% if summary %}
+        <h2>Summary ({{ summary_language }})</h2>
+        <p>{{ summary }}</p>
+        {% endif %}
     </div>
-    {% endif %}
-    
-    {% if summary %}
-    <h2>Summary ({{ summary_language }})</h2>
-    <p>{{ summary }}</p>
-    {% endif %}
 </body>
 </html>

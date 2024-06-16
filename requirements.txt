@@ -1,0 +1,11 @@
+Flask
+Werkzeug
+moviepy
+SpeechRecognition
+pydub
+google-api-python-client
+google-auth
+google-auth-httplib2
+google-auth-oauthlib
+googletrans
+concurrent.futures

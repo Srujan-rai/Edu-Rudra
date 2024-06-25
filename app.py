@@ -44,7 +44,28 @@ def extract_audio(video_path, audio_path):
     video.audio.write_audiofile(audio_path)
     
 def translate_text(text, target_language):
-    return translator.translate(text, dest=target_language).text
+  MAX_CHUNK_SIZE = 3000  # 
+
+  chunks = []
+  i = 0
+  while i < len(text):
+    chunk_end = min(i + MAX_CHUNK_SIZE, len(text))  
+    chunk = text[i:chunk_end]
+
+   
+    last_space = chunk.rfind(" ", 0, MAX_CHUNK_SIZE)
+    if last_space > 0:
+      chunks.append(chunk[:last_space])  
+      i = i + last_space + 1  
+    else:
+      chunks.append(chunk)  
+      i = chunk_end 
+
+  translated_chunks = []
+  for chunk in chunks:
+    translated_chunks.append(translator.translate(chunk, dest=target_language).text)
+  return ''.join(translated_chunks)
+
 
 def transcribe_audio(path):
     recognizer = sr.Recognizer()

@@ -53,10 +53,10 @@ def translate_text(text, target_language):
     chunk = text[i:chunk_end]
 
    
-    last_space = chunk.rfind(".", 0, MAX_CHUNK_SIZE)
-    if last_space > 0:
-      chunks.append(chunk[:last_space])  
-      i = i + last_space + 1  
+    last_period = chunk.rfind(".", 0, MAX_CHUNK_SIZE)
+    if last_period > 0:
+      chunks.append(chunk[:last_period])  
+      i = i + last_period + 1  
     else:
       chunks.append(chunk)  
       i = chunk_end 

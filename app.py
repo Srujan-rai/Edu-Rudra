@@ -44,7 +44,7 @@ def extract_audio(video_path, audio_path):
     video.audio.write_audiofile(audio_path)
     
 def translate_text(text, target_language):
-  MAX_CHUNK_SIZE = 3000  # 
+  MAX_CHUNK_SIZE = 3000  
 
   chunks = []
   i = 0
@@ -53,18 +53,21 @@ def translate_text(text, target_language):
     chunk = text[i:chunk_end]
 
    
-    last_space = chunk.rfind(" ", 0, MAX_CHUNK_SIZE)
-    if last_space > 0:
-      chunks.append(chunk[:last_space])  
-      i = i + last_space + 1  
+    last_period = chunk.rfind(".", 0, MAX_CHUNK_SIZE)
+    if last_period > 0:
+      chunks.append(chunk[:last_period])  
+      i = i + last_period + 1  
     else:
       chunks.append(chunk)  
       i = chunk_end 
 
-  translated_chunks = []
-  for chunk in chunks:
-    translated_chunks.append(translator.translate(chunk, dest=target_language).text)
-  return ''.join(translated_chunks)
+    def translate_chunk(chunk):
+            return translator.translate(chunk, dest=target_language).text
+
+    with ThreadPoolExecutor() as executor:
+        translated_chunks = list(executor.map(translate_chunk, chunks))
+
+    return ''.join(translated_chunks)
 
 
 def transcribe_audio(path):

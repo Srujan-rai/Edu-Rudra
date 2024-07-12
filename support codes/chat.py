@@ -27,6 +27,6 @@ model = genai.GenerativeModel(
 chat_session = model.start_chat(history=[])
 
 # Example interaction (replace INSERT_INPUT_HERE with your input)
-response = chat_session.send_message("Explain how AI works")
+response = chat_session.send_message("renforced learning")
 
 print(response.text)
